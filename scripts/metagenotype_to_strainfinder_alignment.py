@@ -49,14 +49,14 @@ if __name__ == "__main__":
         .sort_index()
         .fillna(0)
     )
-    out_data = full_size_data.values.reshape((g, n, 4)).swapaxes(1, 0)
+    out_data = full_size_data.values.reshape((g, n, 4))
 
     print("Writing", file=sys.stderr)
     with open(sys.argv[2], "wb") as f:
         cp.dump(out_data, file=f)
 
     print("Checking", file=sys.stderr)
-    out_index = full_size_data.index.to_numpy().reshape((g, n, 4)).swapaxes(1, 0)
+    out_index = full_size_data.index.to_numpy().reshape((g, n, 4))
     reconstruction = (
         pd.Series(
             out_data.flatten(),
