@@ -21,7 +21,7 @@ rule metagenotype_tsv_to_strain_finder_aln:
         "conda/strain_finder.yaml"
     shell:
         """
-        python2 {input.script} {input.data} {output}
+        {input.script} {input.data} {output}
         """
 
 
@@ -35,7 +35,7 @@ rule run_strain_finder:
     shell:
         """
         rm -rf {output}
-        python2 include/StrainFinder/StrainFinder.py \
+        include/StrainFinder/StrainFinder.py \
                 --force_update --merge_out --msg \
                 --aln {input} \
                 -N 5 \
@@ -57,5 +57,5 @@ rule parse_strain_finder_cpickle:
         "conda/strain_finder.yaml"
     shell:
         """
-        python2 {input.script} {input.cpickle} {input.indexes} {output.pi} {output.gamma}
+        {input.script} {input.cpickle} {input.indexes} {output.pi} {output.gamma}
         """
