@@ -12,7 +12,8 @@ use rule start_shell as start_shell_sfinder with:
 
 rule metagenotype_tsv_to_strain_finder_aln:
     output:
-        "{stem}.strain_finder_aln.cpickle",
+        cpickle="{stem}.strain_finder.aln.cpickle",
+        indexes='{stem}.strain_finder.aln.indexes.txt',
     input:
         script="scripts/metagenotype_to_strainfinder_alignment.py",
         data="{stem}.metagenotype.tsv",
@@ -26,13 +27,14 @@ rule metagenotype_tsv_to_strain_finder_aln:
 
 rule run_strain_finder:
     output:
-        "{stem}.strain_finder_result.cpickle",
+        "{stem}.strain_finder.em.cpickle",
     input:
-        "{stem}.strain_finder_aln.cpickle",
+        "{stem}.strain_finder.aln.cpickle",
     conda:
         "conda/strain_finder.yaml"
     shell:
         """
+        rm -rf {output}
         python2 include/StrainFinder/StrainFinder.py \
                 --force_update --merge_out --msg \
                 --aln {input} \
@@ -45,13 +47,15 @@ rule run_strain_finder:
 
 rule parse_strain_finder_cpickle:
     output:
-        "{stem}.strain_finder_result.flag",
+        pi='{stem}.strain_finder.pi.tsv',
+        gamma='{stem}.strain_finder.gamma.tsv',
     input:
-        script="scripts/parse_strain_finder_output.py",
-        cpickle="{stem}.strain_finder_result.cpickle",
+        script="scripts/strainfinder_result_to_flatfiles.py",
+        cpickle="{stem}.strain_finder.em.cpickle",
+        indexes='{stem}.strain_finder.aln.indexes.txt',
     conda:
         "conda/strain_finder.yaml"
     shell:
         """
-        python2 {input.script} {input.cpickle} {output}
+        python2 {input.script} {input.cpickle} {input.indexes} {output.pi} {output.gamma}
         """

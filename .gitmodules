@@ -1,0 +1,6 @@
+[submodule "include/StrainFacts"]
+	path = include/StrainFacts
+	url = git@github.com:bsmith89/StrainFacts.git
+[submodule "include/StrainFinder"]
+	path = include/StrainFinder
+	url = https://github.com/cssmillie/StrainFinder.git

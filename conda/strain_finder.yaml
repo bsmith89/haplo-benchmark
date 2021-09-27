@@ -1,4 +1,4 @@
-name: strain_finder
+name: 'strain_finder'
 channels:
   - conda-forge
   - defaults
@@ -145,3 +145,4 @@ dependencies:
     - derapproximator==0.5201
     - openopt==0.51
     - setproctitle==1.1.10
+    - -e /pollard/home/bsmith/Projects/haplo-benchmark/include/StrainFinder

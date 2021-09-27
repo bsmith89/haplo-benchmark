@@ -55,6 +55,11 @@ if __name__ == "__main__":
     with open(sys.argv[2], "wb") as f:
         cp.dump(out_data, file=f)
 
+    with open(sys.argv[3], "w") as f:
+        print(','.join(str(x) for x in sample_list), file=f)
+        print(','.join(str(x) for x in position_list), file=f)
+        print(','.join(str(x) for x in input_allele_list), file=f)
+
     print("Checking", file=sys.stderr)
     out_index = full_size_data.index.to_numpy().reshape((g, n, 4))
     reconstruction = (
