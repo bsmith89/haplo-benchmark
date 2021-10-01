@@ -49,7 +49,7 @@ if __name__ == "__main__":
         .sort_index()
         .fillna(0)
     )
-    out_data = full_size_data.values.reshape((g, n, 4))
+    out_data = full_size_data.values.reshape((n, g, 4))
 
     print("Writing", file=sys.stderr)
     with open(sys.argv[2], "wb") as f:

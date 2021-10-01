@@ -38,8 +38,8 @@ rule run_strain_finder:
         include/StrainFinder/StrainFinder.py \
                 --force_update --merge_out --msg \
                 --aln {input} \
-                -N 5 \
-                --max_reps 10 --dtol 1 --ntol 2 --max_time 3600 --n_keep 3 --converge \
+                -N 20 \
+                --max_reps 10 --dtol 1 --ntol 2 --max_time 7200 --n_keep 5 --converge \
                 --em_out {output}
         # TODO: Do I need to add back the other output file flags: '--otu_out' and '--log'?
         """
