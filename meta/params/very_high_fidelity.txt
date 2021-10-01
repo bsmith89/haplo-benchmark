@@ -1,0 +1,8 @@
+mu_hyper_mean=1000.0
+mu_hyper_scale=1e-5
+epsilon_hyper_mode=1e-5
+epsilon_hyper_spread=1.5
+alpha_hyper_mean=1e5
+alpha_hyper_scale=1e-3
+m_hyper_r_mean=1000.0
+m_hyper_r_scale=1e-10

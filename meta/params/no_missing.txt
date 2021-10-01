@@ -1,0 +1,3 @@
+gamma_hyper=1e-5
+delta_hyper_temp=0.001
+delta_hyper_r=1.0
