@@ -60,6 +60,7 @@ rule simple_fit_strain_facts:
         params="meta/params/default_fit_params.txt",
     params:
         seed=0,
+        device={0: 'cpu', 1: 'cuda'}[config['USE_CUDA']]
     conda: "conda/strain_facts.yaml"
     shell:
         """
@@ -68,6 +69,7 @@ rule simple_fit_strain_facts:
                 --outpath {output} \
                 --random-seed {params.seed} \
                 --verbose \
+                --device {params.device} \
                 @{input.params}
 
         """
