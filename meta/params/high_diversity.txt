@@ -1,0 +1,5 @@
+-s
+200
+-p
+rho_hyper=2.0
+pi_hyper=0.1
