@@ -20,4 +20,4 @@ dependencies:
   - scikit-learn
   - pip
   - pip:
-    - -e git+git@github.com:bsmith89/StrainFacts.git#egg=sfacts
+    - -e /pollard/home/bsmith/Projects/haplo-benchmark/include/StrainFacts
