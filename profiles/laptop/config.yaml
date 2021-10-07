@@ -3,6 +3,9 @@ printshellcmds: false
 keep-going: true
 resources: ['network_connections=3', 'mem_mb=8000']
 use-conda: true
+use-singularity: true
+singularity-prefix: '/Users/byronsmith/.snakemake/singularity'
+singularity-args: "--bind /Users/byronsmith/.snakemake  --bind /Users/byronsmith/.snakemake/conda/pkgs:/opt/conda/pkgs"
 conda-frontend: 'mamba'
 conda-prefix: '/Users/byronsmith/.snakemake/conda'
 config: ['USE_CUDA=0', 'MAX_THREADS=24', 'jupyter_port=8888']
