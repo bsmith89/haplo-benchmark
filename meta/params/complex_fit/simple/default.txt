@@ -1,0 +1,12 @@
+--model
+simple
+--strains_per_sample
+0.4
+--hyperparameters
+gamma_hyper=0.05
+rho_hyper=0.3
+pi_hyper=0.5
+--cull
+1e-4
+--collapse
+0.02
