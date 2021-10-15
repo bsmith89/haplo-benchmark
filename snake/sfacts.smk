@@ -1,19 +1,19 @@
 use rule start_jupyter as start_jupyter_sfacts with:
-    conda: 'conda/strain_facts.yaml'
+    conda: 'conda/sfacts.yaml'
 
 
 use rule start_ipython as start_ipython_sfacts with:
-    conda: 'conda/strain_facts.yaml'
+    conda: 'conda/sfacts.yaml'
 
 
 use rule start_shell as start_shell_sfacts with:
-    conda: 'conda/strain_facts.yaml'
+    conda: 'conda/sfacts.yaml'
 
 
 
 rule simulate_from_model_no_missing:
     output:
-        "data/strain_facts_simulate-model_{model_name}-n{n}-g{g}-s{s}-rho{rho_hyper}-pi{pi_hyper}-mu{mu_hyper_mean}-eps{epsilon_hyper_mode}-alpha{alpha_hyper_mean}-seed{seed}.world.nc"
+        "data/sfacts_simulate-model_{model_name}-n{n}-g{g}-s{s}-rho{rho_hyper}-pi{pi_hyper}-mu{mu_hyper_mean}-eps{epsilon_hyper_mode}-alpha{alpha_hyper_mean}-seed{seed}.world.nc"
     wildcard_constraints:
         seed='[0-9]+',
     params:
@@ -62,8 +62,8 @@ rule extract_and_portion_metagenotype_tsv:
         {input.script} {input.world} {params.num_samples} {params.num_positions} > {output}
         """
 
-rule fit_strain_facts_strategy1:
-    output: "{stem}.metagenotype-n{n}-g{g}.strain_facts_fit1.world.nc"
+rule fit_sfacts_strategy1:
+    output: "{stem}.metagenotype-n{n}-g{g}.sfacts_fit1.world.nc"
     input:
         data="{stem}.metagenotype-n{n}-g{g}.tsv",
     params:
@@ -92,9 +92,9 @@ rule fit_strain_facts_strategy1:
                 # --collapse 0.05 --cull 0.01 \
 
 
-# use rule simple_fit_strain_facts_1 as sim_fit_strain_facts_2 with:
+# use rule simple_fit_sfacts_1 as sim_fit_sfacts_2 with:
 #     output:
-#         "{stem}.strain_facts_fit2.world.nc",
+#         "{stem}.sfacts_fit2.world.nc",
 #     params:
 #         seed=0,
 #         device={0: 'cpu', 1: 'cuda'}[config['USE_CUDA']],

@@ -103,8 +103,8 @@ include: "snake/util.smk"
 include: "snake/general.smk"
 include: "snake/docs.smk"
 include: "snake/mgen_preprocess.smk"
-include: "snake/strain_finder.smk"
-include: "snake/strain_facts.smk"
+include: "snake/sfinder.smk"
+include: "snake/sfacts.smk"
 
 
 if path.exists("snake/local.smk"):

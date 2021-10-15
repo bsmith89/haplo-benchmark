@@ -1,37 +1,37 @@
 use rule start_jupyter as start_jupyter_sfinder with:
-    conda: 'conda/strain_finder.yaml'
+    conda: 'conda/sfinder.yaml'
 
 
 use rule start_ipython as start_ipython_sfinder with:
-    conda: 'conda/strain_finder.yaml'
+    conda: 'conda/sfinder.yaml'
 
 
 use rule start_shell as start_shell_sfinder with:
-    conda: 'conda/strain_finder.yaml'
+    conda: 'conda/sfinder.yaml'
 
 
-rule metagenotype_tsv_to_strain_finder_aln:
+rule metagenotype_tsv_to_sfinder_aln:
     output:
-        cpickle="{stem}.metagenotype-n{n}-g{g}.strain_finder.aln.cpickle",
-        indexes='{stem}.metagenotype-n{n}-g{g}.strain_finder.aln.indexes.txt',
+        cpickle="{stem}.metagenotype-n{n}-g{g}.sfinder.aln.cpickle",
+        indexes='{stem}.metagenotype-n{n}-g{g}.sfinder.aln.indexes.txt',
     input:
-        script="scripts/metagenotype_to_strainfinder_alignment.py",
+        script="scripts/metagenotype_to_sfinder_alignment.py",
         data="{stem}.metagenotype-n{n}-g{g}.tsv",
     conda:
-        "conda/strain_finder.yaml"
+        "conda/sfinder.yaml"
     shell:
         """
         {input.script} {input.data} {output}
         """
 
 
-rule run_strain_finder:
+rule run_sfinder:
     output:
-        "{stem}.strain_finder_fit-s{nstrain}.em.cpickle",
+        "{stem}.sfinder_fit-s{nstrain}.em.cpickle",
     input:
-        "{stem}.strain_finder.aln.cpickle",
+        "{stem}.sfinder.aln.cpickle",
     conda:
-        "conda/strain_finder.yaml"
+        "conda/sfinder.yaml"
     params:
         nstrain=lambda w: int(w.nstrain)
     shell:
@@ -47,16 +47,16 @@ rule run_strain_finder:
         """
 
 
-rule parse_strain_finder_cpickle:
+rule parse_sfinder_cpickle:
     output:
-        pi='{stem}.strain_finder_fit-s{nstrain}.pi.tsv',
-        gamma='{stem}.strain_finder_fit-s{nstrain}.gamma.tsv',
+        pi='{stem}.sfinder_fit-s{nstrain}.pi.tsv',
+        gamma='{stem}.sfinder_fit-s{nstrain}.gamma.tsv',
     input:
         script="scripts/strainfinder_result_to_flatfiles.py",
-        cpickle="{stem}.strain_finder_fit-s{nstrain}.em.cpickle",
-        indexes='{stem}.strain_finder.aln.indexes.txt',
+        cpickle="{stem}.sfinder_fit-s{nstrain}.em.cpickle",
+        indexes='{stem}.sfinder.aln.indexes.txt',
     conda:
-        "conda/strain_finder.yaml"
+        "conda/sfinder.yaml"
     shell:
         """
         {input.script} {input.cpickle} {input.indexes} {output.pi} {output.gamma}
