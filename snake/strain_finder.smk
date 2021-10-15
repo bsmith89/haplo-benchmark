@@ -12,11 +12,11 @@ use rule start_shell as start_shell_sfinder with:
 
 rule metagenotype_tsv_to_strain_finder_aln:
     output:
-        cpickle="{stem}.strain_finder.aln.cpickle",
-        indexes='{stem}.strain_finder.aln.indexes.txt',
+        cpickle="{stem}.metagenotype-n{n}-g{g}.strain_finder.aln.cpickle",
+        indexes='{stem}.metagenotype-n{n}-g{g}.strain_finder.aln.indexes.txt',
     input:
         script="scripts/metagenotype_to_strainfinder_alignment.py",
-        data="{stem}.metagenotype.tsv",
+        data="{stem}.metagenotype-n{n}-g{g}.tsv",
     conda:
         "conda/strain_finder.yaml"
     shell:
@@ -27,7 +27,7 @@ rule metagenotype_tsv_to_strain_finder_aln:
 
 rule run_strain_finder:
     output:
-        "{stem}.strain_finder-s{nstrain}.em.cpickle",
+        "{stem}.strain_finder_fit-s{nstrain}.em.cpickle",
     input:
         "{stem}.strain_finder.aln.cpickle",
     conda:
@@ -41,7 +41,7 @@ rule run_strain_finder:
                 --force_update --merge_out --msg \
                 --aln {input} \
                 -N {params.nstrain} \
-                --max_reps 10 --dtol 1 --ntol 2 --max_time 7200 --n_keep 5 --converge \
+                --max_reps 1 --dtol 1 --ntol 2 --max_time 1800 --n_keep 5 --converge \
                 --em_out {output}
         # TODO: Do I need to add back the other output file flags: '--otu_out' and '--log'?
         """
@@ -49,11 +49,11 @@ rule run_strain_finder:
 
 rule parse_strain_finder_cpickle:
     output:
-        pi='{stem}.strain_finder-s{nstrain}.pi.tsv',
-        gamma='{stem}.strain_finder-s{nstrain}.gamma.tsv',
+        pi='{stem}.strain_finder_fit-s{nstrain}.pi.tsv',
+        gamma='{stem}.strain_finder_fit-s{nstrain}.gamma.tsv',
     input:
         script="scripts/strainfinder_result_to_flatfiles.py",
-        cpickle="{stem}.strain_finder-s{nstrain}.em.cpickle",
+        cpickle="{stem}.strain_finder_fit-s{nstrain}.em.cpickle",
         indexes='{stem}.strain_finder.aln.indexes.txt',
     conda:
         "conda/strain_finder.yaml"
