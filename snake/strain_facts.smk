@@ -91,3 +91,15 @@ rule fit_strain_facts_strategy1:
         """
                 # --collapse 0.05 --cull 0.01 \
 
+
+# use rule simple_fit_strain_facts_1 as sim_fit_strain_facts_2 with:
+#     output:
+#         "{stem}.strain_facts_fit2.world.nc",
+#     params:
+#         seed=0,
+#         device={0: 'cpu', 1: 'cuda'}[config['USE_CUDA']],
+#         num_strains=50,
+#         gamma_hyper=1e-3,
+#         rho_hyper=0.3,
+#         pi_hyper=0.5,
+#         learning_rate=1e-2,
