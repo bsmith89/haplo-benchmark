@@ -1,18 +1,9 @@
 # Always ignore
 .DS_Store
 *.swp
-.ipynb_checkpoints/
 *.pyc
-scripts/__pycache__/
-.bash_history
-.parallel
-.snakemake
-.conda
-.cache
-.ipython
-.jupyter
-.local
-.theano
+*/__pycache__/
+.*
 
 log
 cluster_log
