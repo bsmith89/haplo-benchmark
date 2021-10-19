@@ -49,6 +49,31 @@ rule fit_sfinder:
                 --em_out {output}
         """
 
+rule fit_sfinder_global:
+    output:
+        "{stem}.fit-sfinder2-s{nstrain}-seed{seed}.em.cpickle",
+    input:
+        "{stem}.sfinder.aln.cpickle",
+    conda:
+        "conda/sfinder.yaml"
+    params:
+        nstrain=lambda w: int(w.nstrain),
+        seed = lambda w: int(w.seed)
+    benchmark:
+        "{stem}.fit-sfinder-s{nstrain}-seed{seed}.benchmark"
+    shell:
+        """
+        rm -rf {output}
+        include/StrainFinder/StrainFinder.py \
+                --force_update --merge_out --msg \
+                --aln {input} \
+                --seed {params.seed} \
+                -N {params.nstrain} \
+                --max_reps 10 --dtol 1 --ntol 2 --max_time 7200 --n_keep 3 --converge \
+                --em_out {output}
+        """
+
+
 
 rule parse_sfinder_cpickle:
     output:
