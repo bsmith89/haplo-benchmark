@@ -25,35 +25,38 @@ rule metagenotype_tsv_to_sfinder_aln:
         """
 
 
-rule run_sfinder:
+rule fit_sfinder:
     output:
-        "{stem}.sfinder_fit-s{nstrain}.em.cpickle",
+        "{stem}.fit-sfinder-s{nstrain}-seed{seed}.em.cpickle",
     input:
         "{stem}.sfinder.aln.cpickle",
     conda:
         "conda/sfinder.yaml"
     params:
-        nstrain=lambda w: int(w.nstrain)
+        nstrain=lambda w: int(w.nstrain),
+        seed = lambda w: int(w.seed)
+    benchmark:
+        "{stem}.fit-sfinder-s{nstrain}-seed{seed}.benchmark"
     shell:
         """
         rm -rf {output}
         include/StrainFinder/StrainFinder.py \
                 --force_update --merge_out --msg \
                 --aln {input} \
+                --seed {params.seed} \
                 -N {params.nstrain} \
-                --max_reps 1 --dtol 1 --ntol 2 --max_time 1800 --n_keep 5 --converge \
+                --max_reps 1 --dtol 1 --ntol 2 --max_time 7200 --n_keep 5 --converge \
                 --em_out {output}
-        # TODO: Do I need to add back the other output file flags: '--otu_out' and '--log'?
         """
 
 
 rule parse_sfinder_cpickle:
     output:
-        pi='{stem}.sfinder_fit-s{nstrain}.pi.tsv',
-        gamma='{stem}.sfinder_fit-s{nstrain}.gamma.tsv',
+        pi='{stem}.fit-{params}.pi.tsv',
+        gamma='{stem}.fit-{params}.gamma.tsv',
     input:
         script="scripts/strainfinder_result_to_flatfiles.py",
-        cpickle="{stem}.sfinder_fit-s{nstrain}.em.cpickle",
+        cpickle="{stem}.fit-{params}.em.cpickle",
         indexes='{stem}.sfinder.aln.indexes.txt',
     conda:
         "conda/sfinder.yaml"

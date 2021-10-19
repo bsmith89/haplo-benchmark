@@ -103,3 +103,14 @@ rule fit_sfacts_strategy1:
 #         rho_hyper=0.3,
 #         pi_hyper=0.5,
 #         learning_rate=1e-2,
+
+
+rule build_world_from_tsv:
+    output: '{stem}.fit-{params}.world.nc'
+    input:
+        script='scripts/sfacts_world_from_flatfiles.py',
+        gamma='{stem}.fit-{params}.gamma.tsv',
+        pi='{stem}.fit-{params}.pi.tsv',
+        mgen='{stem}.tsv'
+    conda: 'conda/sfacts.yaml'
+    shell: "{input.script} {input.mgen} {input.gamma} {input.pi} {output}"
