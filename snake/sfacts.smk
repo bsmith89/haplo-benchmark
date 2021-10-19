@@ -16,6 +16,7 @@ rule simulate_from_model_no_missing:
         "data/sfacts_simulate-model_{model_name}-n{n}-g{g}-s{s}-rho{rho_hyper}-pi{pi_hyper}-mu{mu_hyper_mean}-eps{epsilon_hyper_mode}-alpha{alpha_hyper_mean}-seed{seed}.world.nc"
     wildcard_constraints:
         seed='[0-9]+',
+        alpha_hyper_mean='[0-9]+',
     params:
         seed=lambda w: int(w.seed),
         n=lambda w: int(w.n),
