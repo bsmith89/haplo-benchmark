@@ -1,10 +1,13 @@
-name: strain_facts
+name: sfacts
 channels:
   - defaults
   - conda-forge
   - pytorch
   - nvidia
 dependencies:
+  - pip
+  - pip:
+    - -e /pollard/home/bsmith/Projects/haplo-benchmark/include/StrainFacts
   - python=3.9
   - xarray
   - matplotlib
@@ -18,6 +21,3 @@ dependencies:
   - cudatoolkit=11.1
   - numpy
   - scikit-learn
-  - pip
-  - pip:
-    - -e git+git@github.com:bsmith89/StrainFacts.git#egg=sfacts

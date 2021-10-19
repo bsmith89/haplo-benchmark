@@ -26,6 +26,7 @@ rule simulate_from_model_no_missing:
         epsilon_hyper_mode=lambda w: float(w.epsilon_hyper_mode) / 1000,
         alpha_hyper_mean=lambda w: float(w.alpha_hyper_mean),
         mu_hyper_mean=lambda w: float(w.mu_hyper_mean) / 10,
+    conda: 'conda/sfacts.yaml'
     shell:
         dd(
             r"""
@@ -57,39 +58,41 @@ rule extract_and_portion_metagenotype_tsv:
     params:
         num_samples=lambda w: int(w.n),
         num_positions=lambda w: int(w.g),
+    conda: 'conda/sfacts.yaml'
     shell:
         """
         {input.script} {input.world} {params.num_samples} {params.num_positions} > {output}
         """
 
 rule fit_sfacts_strategy1:
-    output: "{stem}.metagenotype-n{n}-g{g}.sfacts_fit1.world.nc"
+    output: "{stem}.metagenotype-n{n}-g{g}.fit-sfacts1-s{nstrain}-seed{seed}.world.nc"
     input:
         data="{stem}.metagenotype-n{n}-g{g}.tsv",
     params:
-        seed=0,
         device={0: 'cpu', 1: 'cuda'}[config['USE_CUDA']],
-        strains_per_sample=0.5,
+        nstrain=lambda w: int(w.nstrain),
         gamma_hyper=1e-3,
         rho_hyper=0.2,
         pi_hyper=0.5,
         learning_rate=1e-2,
-        cull=1e-4,
-        collapse=0.02,
+        # cull=1e-4,
+        # collapse=0.02,
+        seed = lambda w: int(w.seed)
+    benchmark:
+        "{stem}.metagenotype-n{n}-g{g}.fit-sfacts1-s{nstrain}-seed{seed}.benchmark"
+    conda: 'conda/sfacts.yaml'
     shell:
         """
-        python3 -m sfacts complex_fit -m simple  \
+        python3 -m sfacts simple_fit -m simple  \
                 --verbose --device {params.device} \
                 --inpath {input.data} \
                 --hyperparameters gamma_hyper={params.gamma_hyper} pi_hyper={params.pi_hyper} rho_hyper={params.rho_hyper} \
-                --cull {params.cull} --collapse {params.collapse} \
                 --optimizer-learning-rate {params.learning_rate} \
-                --strains_per_sample {params.strains_per_sample} \
+                -s {params.nstrain} \
                 --random-seed {params.seed} \
                 --outpath {output}
 
         """
-                # --collapse 0.05 --cull 0.01 \
 
 
 # use rule simple_fit_sfacts_1 as sim_fit_sfacts_2 with:
