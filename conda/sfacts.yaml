@@ -1,23 +1,27 @@
 name: sfacts
 channels:
-  - defaults
-  - conda-forge
-  - pytorch
   - nvidia
+  - pytorch
+  - conda-forge
+  - defaults
 dependencies:
-  - pip
-  - pip:
-    - -e /pollard/home/bsmith/Projects/haplo-benchmark/include/StrainFacts
   - python=3.9
-  - xarray
-  - matplotlib
+  - pip
+  - cudatoolkit
   - pytorch
   - torchvision
+  - torchaudio
+  - ipython
+  - jupyterlab
+  - xarray
+  - matplotlib
   - pyro-ppl
+  - torch-optimizer
   - pandas
   - seaborn
   - tqdm
   - scipy
-  - cudatoolkit=11.1
   - numpy
   - scikit-learn
+  - pip:
+    - -e /pollard/home/bsmith/Projects/haplo-benchmark/include/StrainFacts
