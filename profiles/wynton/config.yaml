@@ -3,9 +3,9 @@ printshellcmds: false
 keep-going: true
 resources: ['network_connections=3', 'mem_mb=500000']
 use-conda: true
-conda-frontend: 'mamba'
 conda-prefix: '/wynton/home/pollard/bsmith/.snakemake/conda'
+conda-frontend: 'mamba'
 use-singularity: true
-singularity-args: "--bind /pollard/shattuck0/ --bind /pollard/data/ --bind /pollard/home/bsmith/"
 singularity-prefix: '/wynton/home/pollard/bsmith/.snakemake/singularity'
+singularity-args: "--bind /pollard/ --bind /salilab/diva1/home/anaconda/anaconda3 --bind /scratch/bsmith --bind /scratch/bsmith:/tmp --bind /wynton/home/pollard/bsmith"
 config: ['USE_CUDA=0', 'MAX_THREADS=24', 'jupyter_port=8818']

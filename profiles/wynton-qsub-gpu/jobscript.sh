@@ -8,8 +8,8 @@
 # # using GPUs that were not assigned.
 # # FIXME: How to be sure?
 # # FIXME: Why is SGE_GPU not set??
-# export CUDA_VISIBLE_DEVICES=$SGE_GPU
-# echo CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES SGE_GPU=$SGE_GPU
+export CUDA_VISIBLE_DEVICES=$SGE_GPU
+echo CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES SGE_GPU=$SGE_GPU
 
 source ./env
 
