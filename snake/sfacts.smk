@@ -163,11 +163,34 @@ use rule fit_sfacts_strategy1 as fit_sfacts_strategy1_gpu with:
 
 
 rule build_world_from_tsv:
-    output: '{stem}.fit-{params}.world.nc'
+    output:
+        "{stem}.fit-{params}.world.nc",
     input:
-        script='scripts/sfacts_world_from_flatfiles.py',
-        gamma='{stem}.fit-{params}.gamma.tsv',
-        pi='{stem}.fit-{params}.pi.tsv',
-        mgen='{stem}.tsv'
-    conda: 'conda/sfacts.yaml'
-    shell: "{input.script} {input.mgen} {input.gamma} {input.pi} {output}"
+        script="scripts/sfacts_world_from_flatfiles.py",
+        gamma="{stem}.fit-{params}.gamma.tsv",
+        pi="{stem}.fit-{params}.pi.tsv",
+        mgen="{stem}.tsv",
+    conda:
+        "conda/sfacts.yaml"
+    shell:
+        "{input.script} {input.mgen} {input.gamma} {input.pi} {output}"
+
+
+localrules:
+    build_world_from_tsv,
+
+
+rule evaluate_fit_against_simulation:
+    output:
+        "data/sfacts_simulate-{sim_stem}.metagenotype-{portion_stem}.fit-{params}.evaluation.tsv",
+    input:
+        script="scripts/evaluate_haplotyping_against_simulation.py",
+        sim="/tmp/bsmith/haplo-benchmark/data/sfacts_simulate-{sim_stem}.world.nc",
+        fit="data/sfacts_simulate-{sim_stem}.metagenotype-{portion_stem}.fit-{params}.world.nc",
+        bench="data/sfacts_simulate-{sim_stem}.metagenotype-{portion_stem}.fit-{params}.benchmark",
+    conda:
+        "conda/sfacts.yaml"
+    shell:
+        """
+        {input.script} {input.sim} {input.fit} {input.bench} {output}
+        """
