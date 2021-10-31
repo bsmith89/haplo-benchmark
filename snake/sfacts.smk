@@ -73,6 +73,11 @@ rule extract_and_portion_metagenotype_tsv:
         {input.script} {input.world} {params.num_samples} {params.num_positions} > {output}
         """
 
+
+localrules:
+    extract_and_portion_metagenotype_tsv,
+
+
 rule fit_sfacts_strategy1:
     output:
         "{stem}.metagenotype-n{n}-g{g}.fit-sfacts1-s{nstrain}-seed{seed}.world.nc",
