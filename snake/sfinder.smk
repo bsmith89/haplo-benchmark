@@ -71,7 +71,7 @@ rule fit_sfinder_global:
         nstrain=lambda w: int(w.nstrain),
         seed=lambda w: int(w.seed),
     benchmark:
-        "{stem}.fit-sfinder-s{nstrain}-seed{seed}.benchmark"
+        "{stem}.fit-sfinder2-s{nstrain}-seed{seed}.benchmark"
     shell:
         """
         rm -rf {output}
