@@ -190,7 +190,7 @@ rule evaluate_fit_against_simulation:
         "data/sfacts_simulate-{sim_stem}.metagenotype-{portion_stem}.fit-{params}.evaluation.tsv",
     input:
         script="scripts/evaluate_haplotyping_against_simulation.py",
-        sim="/tmp/bsmith/haplo-benchmark/data/sfacts_simulate-{sim_stem}.world.nc",
+        sim="data/sfacts_simulate-{sim_stem}.world.nc",
         fit="data/sfacts_simulate-{sim_stem}.metagenotype-{portion_stem}.fit-{params}.world.nc",
         bench="data/sfacts_simulate-{sim_stem}.metagenotype-{portion_stem}.fit-{params}.benchmark",
     conda:
