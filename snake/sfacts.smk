@@ -90,10 +90,11 @@ rule fit_sfacts_strategy1:
         rho_hyper=0.08,
         pi_hyper=0.2,
         seed=lambda w: int(w.seed),
-        model_name="simple_ssdd2",
+        model_name="simple_ssdd2_with_error",
         optimizer="Adamax",
-        lag1=40,
-        lag2=200,
+        lag1=50,
+        lag2=500,
+        lr=5e-1,
     benchmark:
         "{stem}.metagenotype-n{n}-g{g}.fit-sfacts1-s{nstrain}-seed{seed}.benchmark"
     conda: 'conda/sfacts.yaml'
@@ -108,8 +109,8 @@ rule fit_sfacts_strategy1:
                 --hyperparameters gamma_hyper={params.gamma_hyper} \
                 --hyperparameters pi_hyper={params.pi_hyper} \
                 --hyperparameters rho_hyper={params.rho_hyper} \
-                --optimizer {params.optimizer} \
-                --lag1 {params.lag1} --lag2 {params.lag2} \
+                --optimizer {params.optimizer} --optimizer-learning-rate {params.lr} \
+                --max-iter 1_000_000 --lag1 {params.lag1} --lag2 {params.lag2} \
                 -s {params.nstrain} \
                 --random-seed {params.seed} \
                 --outpath {output}
